@@ -41,15 +41,19 @@ class Grandmother extends React.Component {
 
 	setAge = (age) => {
 		this.setState({ age });
-}
+};
 
 	render() {
+
+		const transferData = {
+			state: this.state,
+			setAge: this.setAge,
+		};
+
 		return (
 
-			<FamilyProvider value={ this.state }>
+			<FamilyProvider value={ transferData }>
 				<Mother />
-				<button onClick={ ()=>{ this.setAge(this.state.age - 1) } }>decrement Age</button>
-				<button onClick={ ()=>{ this.setAge(this.state.age + 1) } }>increment Age</button>
 			</FamilyProvider>
 		);
 	}
@@ -65,7 +69,16 @@ const Child = () => {
 		<FamilyConsumer>
 			{
 				(data) => {
-					return (<p>Name is { data.lastName }, age is { data.age }</p>);
+					return (
+						<React.Fragment>
+							<p>
+								Name is { data.state.lastName }, age is { data.state.age }
+							</p><br />
+							<button onClick={ ()=>{ data.setAge(data.state.age - 1) } }>decrement Age</button>
+							<br />
+							<button onClick={ ()=>{ data.setAge(data.state.age + 1) } }>increment Age</button>
+
+						</React.Fragment>);
 				}
 				/*
 					function (lastName) {
